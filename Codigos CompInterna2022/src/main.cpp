@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <MotorDC.h>
+#include <Ultrasonic.h>
 
 // Motor 1
 #define pin1A 5
