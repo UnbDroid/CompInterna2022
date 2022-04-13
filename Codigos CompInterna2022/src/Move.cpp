@@ -2,7 +2,7 @@
 #include <Move.h>
 #include <math.h>
 
-#define kp 0.05
+#define kp 0.4
 #define ki 0.001
 float time1 = millis();
 
@@ -25,9 +25,9 @@ void moveAllpid(int _power, MotorDC *motorLeft, MotorDC *motorRight, float *soma
 
   float mLeft = motorLeft->getCount();
   float mRight = motorRight->getCount();
-  error[0] = (mLeft - mRight) - giro; // diferença entre os encoderes sendo o error atual
+  error[0] = (mLeft - mRight);// - giro; // diferença entre os encoderes sendo o error atual
   error[1] = millis();
-
+  Serial.println(error[0]);
 
   deltaT = (error[1] - lastT)/1000;
 
@@ -41,7 +41,16 @@ void moveAllpid(int _power, MotorDC *motorLeft, MotorDC *motorRight, float *soma
   }
 
   powerLeft = abs(_power);
-  powerRight = abs(_power) + (error[0]*kp) + (*soma)*ki;
+  powerRight = abs(_power) + (error[0]*kp); //+ (*soma)*ki;
+  Serial.println("LEFT");
+  Serial.println(powerLeft);
+  Serial.println("right");
+  Serial.println(powerRight);
+
+  powerLeft = (powerLeft > 255) ? 255 : powerLeft;
+  powerRight = (powerRight > 255) ? 255 : powerRight;
+  powerLeft = (powerLeft < 0) ? 0 : powerLeft;
+  powerRight = (powerRight < 0) ? 0 : powerRight;
 
   motorLeft->fwd(powerLeft);
   motorRight->fwd(powerRight);

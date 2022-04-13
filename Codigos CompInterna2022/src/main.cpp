@@ -37,8 +37,8 @@
 #define pinColorLeftOut 43
 
 
-MotorDC motorRight (5, 7, 8, 12); 
-MotorDC motorLeft (6, 4, 9, 13);
+MotorDC motorRight (5, 7, 8, 18); 
+MotorDC motorLeft (6, 4, 9, 2);
 
 Ultrasonic SensorUltraFront(pinFrontTrigger, pinFrontEcho);
 Ultrasonic SensorUltraLeft(pinLeftTrigger, pinLeftEcho);
@@ -53,6 +53,7 @@ float error [2];
 float giro = 0;
 float mR;
 float mL;
+unsigned long tsart;
 
 void inc (){
 
@@ -66,25 +67,46 @@ void incR (){
 }
 
 void setup() {
+	tsart = millis();
   Serial.begin(9600);
-  attachInterrupt(digitalPinToInterrupt(13), inc, RISING);
-	attachInterrupt(digitalPinToInterrupt(12), incR, RISING);
+  attachInterrupt(digitalPinToInterrupt(2), inc, RISING);
+	attachInterrupt(digitalPinToInterrupt(18), incR, RISING);
   error[0] = 0;
 	error[1] = millis();
 }
 
 
 void loop() {
-
-  mL = motorLeft.getCount();
+	/*
+	motorRight.fwd(60);
+    //mL = motorLeft.getCount();
 	mR = motorRight.getCount();
 	giro = mL - mR;
 	soma = 0;
+	delay(2000);
+	mL = motorRight.getCount();
+	Serial.print("mL: ");
+	Serial.print(mL);
+	Serial.print("\n");
+	motorRight.fwd(120);
+	delay(2000);
+	mL = motorRight.getCount();
+	Serial.print("mL: ");
+	Serial.print(mL);
+	Serial.print("\n");
+	delay(5000);*/
 
+	
+/*
   Serial.print("mL: ");
 	Serial.print(mL);
 	Serial.print("mR: ");
 	Serial.print(mR);
+*/
+  
+  while(millis()- tsart < 5000){
 
-  moveAllpid(50, &motorLeft, &motorRight, &soma, error, giro);
+  }
+  moveAllpid(60, &motorLeft, &motorRight, &soma, error, giro);
 }
+
