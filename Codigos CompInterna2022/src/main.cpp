@@ -3,6 +3,7 @@
 #include <SensorColor.h>
 #include <Ultrasonic.h>
 #include <Move.h>
+#include <Gyro.h>
 
 
 // Motor Direita
@@ -36,6 +37,8 @@
 #define pinColorLeftS3 47
 #define pinColorLeftOut 43
 
+int acelX,acelY,acelZ,temperatura,giroX,giroY,giroZ;
+
 
 MotorDC motorRight (5, 7, 8, 18); 
 MotorDC motorLeft (6, 4, 9, 2);
@@ -46,6 +49,7 @@ Ultrasonic SensorUltraRight(pinRightTrigger, pinRightEcho);
 
 SensorColor SensorColorLeft(pinColorLeftS0, pinColorLeftS1, pinColorLeftS2, pinColorLeftS3, pinColorLeftOut);
 
+Gyro gyroscope;
 
 //Declaração de variáveis que serão parâmetros na função moveAllpid.
 float soma = 0;
@@ -68,45 +72,32 @@ void incR (){
 
 void setup() {
 	tsart = millis();
-  Serial.begin(9600);
-  attachInterrupt(digitalPinToInterrupt(2), inc, RISING);
+  	Serial.begin(9600);
+  	attachInterrupt(digitalPinToInterrupt(2), inc, RISING);
 	attachInterrupt(digitalPinToInterrupt(18), incR, RISING);
-  error[0] = 0;
+  	error[0] = 0;
 	error[1] = millis();
+	Wire.begin();
+    Wire.beginTransmission(0x68);  //Inicia transmissão para o endereço do MPU
+    Wire.write(0x6B);
+    Wire.write(0); 
+    Wire.endTransmission(true);
 }
 
 
 void loop() {
-	/*
-	motorRight.fwd(60);
-    //mL = motorLeft.getCount();
-	mR = motorRight.getCount();
-	giro = mL - mR;
-	soma = 0;
-	delay(2000);
-	mL = motorRight.getCount();
-	Serial.print("mL: ");
-	Serial.print(mL);
-	Serial.print("\n");
-	motorRight.fwd(120);
-	delay(2000);
-	mL = motorRight.getCount();
-	Serial.print("mL: ");
-	Serial.print(mL);
-	Serial.print("\n");
-	delay(5000);*/
 
-	
-/*
-  Serial.print("mL: ");
-	Serial.print(mL);
-	Serial.print("mR: ");
-	Serial.print(mR);
-*/
-  
+	Serial.print("eixo z:");
+	Serial.print(gyroscope.filter(10));
+	Serial.print("\n");
+	delay(500); 
+
+
+  /*
   while(millis()- tsart < 5000){
 
   }
   moveAllpid(60, &motorLeft, &motorRight, &soma, error, giro);
+  */
 }
 
