@@ -37,7 +37,10 @@
 #define pinColorLeftS3 47
 #define pinColorLeftOut 43
 
-int acelX,acelY,acelZ,temperatura,giroX,giroY,giroZ;
+
+#define EIXO_X 4
+#define EIXO_Y 5
+#define EIXO_Z 6
 
 
 MotorDC motorRight (5, 7, 8, 18); 
@@ -88,7 +91,7 @@ void setup() {
 void loop() {
 
 	Serial.print("eixo z:");
-	Serial.print(gyroscope.filter(10));
+	Serial.print(gyroscope.filter(10, EIXO_Z));
 	Serial.print("\n");
 	delay(500); 
 

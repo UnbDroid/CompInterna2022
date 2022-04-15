@@ -14,7 +14,7 @@ class Gyro
 
     long requestData(int valorEixo);
 
-    long filter(int count);
+    long filter(int count, int eixoValue);
 
     private:
 

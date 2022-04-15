@@ -3,7 +3,7 @@
 //Endereco I2C do MPU6050
 const int MPU=0x68;  //pino aberto 0X68 , pino ligado em 3,3V 0x69
 
-int data[6];
+int data[7];
 
 Gyro::Gyro(){
     
@@ -27,12 +27,12 @@ long Gyro::requestData(int valorEixo){
 
 }
 
-long Gyro::filter(int count){
+long Gyro::filter(int count, int eixoValue){
 	int i = 0;
-	long eixoZ = 0;
+	long eixo = 0;
 	while (i < count){
-		 eixoZ =+ this->requestData(6);
+		 eixo =+ this->requestData(eixoValue);
 		i++;
 	}
-    return (eixoZ)/count;
+    return (eixo)/count;
 }
